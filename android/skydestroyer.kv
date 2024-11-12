@@ -1,0 +1,69 @@
+#:kivy 2.0.0
+#:import colors src.constants.colors
+
+<BaseEntity>:
+    size_hint: None, None
+
+<Player>:
+    canvas:
+        # Основное тело самолета
+        Color:
+            rgba: colors.PLAYER_COLOR
+        Triangle:
+            points: [self.x, self.y + self.height/2, self.x + self.width, self.y + self.height/2, self.x + self.width/2, self.y]
+        
+        # Хвост самолета
+        Triangle:
+            points: [self.x + self.width * 0.33, self.y + self.height/2, self.x + self.width * 0.67, self.y + self.height/2, self.x + self.width/2, self.y + self.height]
+        
+        # Белая обводка
+        Color:
+            rgba: colors.WHITE
+        Line:
+            points: [self.x, self.y + self.height/2, self.x + self.width, self.y + self.height/2, self.x + self.width/2, self.y, self.x, self.y + self.height/2]
+            width: 1
+        Line:
+            points: [self.x + self.width * 0.33, self.y + self.height/2, self.x + self.width * 0.67, self.y + self.height/2, self.x + self.width/2, self.y + self.height, self.x + self.width * 0.33, self.y + self.height/2]
+            width: 1
+
+<Enemy>:
+    canvas:
+        Color:
+            rgba: colors.ENEMY_COLOR
+        Triangle:
+            points: [self.x, self.y + self.height/2, self.x + self.width, self.y + self.height/2, self.x + self.width/2, self.y]
+        Color:
+            rgba: colors.WHITE
+        Line:
+            points: [self.x, self.y + self.height/2, self.x + self.width, self.y + self.height/2, self.x + self.width/2, self.y, self.x, self.y + self.height/2]
+            width: 1
+
+<Bullet>:
+    canvas:
+        # Свечение пули
+        Color:
+            rgba: colors.BULLET_COLOR[0], colors.BULLET_COLOR[1], colors.BULLET_COLOR[2], self.opacity * 0.5
+        Ellipse:
+            pos: self.x - 2, self.y - 2
+            size: self.width + 4, self.height + 4
+        
+        # Основное тело пули
+        Color:
+            rgba: colors.BULLET_COLOR[0], colors.BULLET_COLOR[1], colors.BULLET_COLOR[2], self.opacity
+        Ellipse:
+            pos: self.pos
+            size: self.size
+
+<GameScreen>:
+    canvas.before:
+        Color:
+            rgba: colors.BACKGROUND_COLOR
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    Label:
+        text: f'Score: {root.score}'
+        size_hint: None, None
+        pos_hint: {'right': 0.95, 'top': 0.95}
+        font_size: '20sp'
